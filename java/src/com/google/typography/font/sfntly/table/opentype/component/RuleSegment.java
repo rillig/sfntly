@@ -12,15 +12,20 @@ class RuleSegment extends LinkedList<GlyphGroup> {
   }
 
   RuleSegment(GlyphGroup glyphGroup) {
-    addInternal(glyphGroup);
+    if (glyphGroup != null)
+        addInternal(glyphGroup);
   }
 
   RuleSegment(int glyph) {
+    if (glyph < 0)
+      return;
     GlyphGroup glyphGroup = new GlyphGroup(glyph);
     addInternal(glyphGroup);
   }
 
   RuleSegment(GlyphList glyphs) {
+    if (glyphs == null)
+      return;
     for (int glyph : glyphs) {
       GlyphGroup glyphGroup = new GlyphGroup(glyph);
       addInternal(glyphGroup);
