@@ -132,7 +132,10 @@ public final class CompositeGlyph extends Glyph {
 
     int tsize = transformationSize(contour);
     byte[] transformation = new byte[tsize];
-    data.readBytes(index, transformation, 0, tsize);
+    // if there are no transformation data, there might be no data
+    // at all at 'index' and data.readBytes() will throw an exception.
+    if (tsize > 0)
+      data.readBytes(index, transformation, 0, tsize);
     return transformation;
   }
 

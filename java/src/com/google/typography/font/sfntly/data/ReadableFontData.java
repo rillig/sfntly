@@ -138,7 +138,7 @@ public class ReadableFontData extends FontData {
    * @return a slice of the original FontData
    */
   @Override
-  public ReadableFontData slice(int offset, int length) {
+  public ReadableFontData slice(int offset, int length) throws IndexOutOfBoundsException {
     if (offset < 0
         || length < 0
         || offset > Integer.MAX_VALUE - length
@@ -157,7 +157,7 @@ public class ReadableFontData extends FontData {
    * @return a slice of the original FontData
    */
   @Override
-  public ReadableFontData slice(int offset) {
+  public ReadableFontData slice(int offset) throws IndexOutOfBoundsException {
     if (offset < 0 || offset > size()) {
       throw new IndexOutOfBoundsException("Attempt to bind data outside of its limits.");
     }
@@ -294,7 +294,7 @@ public class ReadableFontData extends FontData {
    * @return the UBYTE; -1 if outside the bounds of the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readUByte(int index) {
+  public int readUByte(int index) throws IndexOutOfBoundsException {
     if (!boundsCheck(index, 1)) {
       throw new IndexOutOfBoundsException(
           "Index attempted to be read from is out of bounds: " + Integer.toHexString(index));
@@ -314,7 +314,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readByte(int index) {
+  public int readByte(int index) throws IndexOutOfBoundsException {
     if (!boundsCheck(index, 1)) {
       throw new IndexOutOfBoundsException(
           "Index attempted to be read from is out of bounds: " + Integer.toHexString(index));
@@ -338,7 +338,7 @@ public class ReadableFontData extends FontData {
    * @return the number of bytes actually read; -1 if the index is outside the bounds of the font
    *     data
    */
-  public int readBytes(int index, byte[] b, int offset, int length) {
+  public int readBytes(int index, byte[] b, int offset, int length) throws IndexOutOfBoundsException {
     int bytesRead = array.get(boundOffset(index), b, offset, boundLength(index, length));
     if (bytesRead < 0) {
       throw new IndexOutOfBoundsException(
@@ -353,7 +353,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readChar(int index) {
+  public int readChar(int index) throws IndexOutOfBoundsException {
     return readUByte(index);
   }
 
@@ -363,7 +363,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readUShort(int index) {
+  public int readUShort(int index) throws IndexOutOfBoundsException {
     return 0xffff & (readUByte(index) << 8 | readUByte(index + 1));
   }
 
@@ -373,7 +373,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readShort(int index) {
+  public int readShort(int index) throws IndexOutOfBoundsException {
     return ((readByte(index) << 8 | readUByte(index + 1)) << 16) >> 16;
   }
 
@@ -383,7 +383,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readUInt24(int index) {
+  public int readUInt24(int index) throws IndexOutOfBoundsException {
     return 0xffffff & (readUByte(index) << 16 | readUByte(index + 1) << 8 | readUByte(index + 2));
   }
 
@@ -393,7 +393,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public long readULong(int index) {
+  public long readULong(int index) throws IndexOutOfBoundsException {
     return 0xffffffffL
         & (readUByte(index) << 24
             | readUByte(index + 1) << 16
@@ -408,7 +408,7 @@ public class ReadableFontData extends FontData {
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    * @throws ArithmeticException if the value will not fit into an integer
    */
-  public int readULongAsInt(int index) {
+  public int readULongAsInt(int index) throws ArithmeticException {
     long ulong = readULong(index);
     if ((ulong & 0x80000000) == 0x80000000) {
       throw new ArithmeticException("Long value too large to fit into an integer.");
@@ -422,7 +422,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public long readULongLE(int index) {
+  public long readULongLE(int index) throws IndexOutOfBoundsException {
     return 0xffffffffL
         & (readUByte(index)
             | readUByte(index + 1) << 8
@@ -436,7 +436,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readLong(int index) {
+  public int readLong(int index) throws IndexOutOfBoundsException {
     return readByte(index) << 24
         | readUByte(index + 1) << 16
         | readUByte(index + 2) << 8
@@ -449,7 +449,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readFixed(int index) {
+  public int readFixed(int index) throws IndexOutOfBoundsException {
     return readLong(index);
   }
 
@@ -459,7 +459,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public BigDecimal readF2Dot14(int index) {
+  public BigDecimal readF2Dot14(int index) throws IndexOutOfBoundsException {
     throw new UnsupportedOperationException();
   }
 
@@ -469,7 +469,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public long readDateTimeAsLong(int index) {
+  public long readDateTimeAsLong(int index) throws IndexOutOfBoundsException {
     return readULong(index) << 32 | readULong(index + 4);
   }
 
@@ -479,7 +479,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public Date readLongDateTime(int index) {
+  public Date readLongDateTime(int index) throws IndexOutOfBoundsException {
     throw new UnsupportedOperationException();
   }
 
@@ -489,7 +489,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readFUnit(int index) {
+  public int readFUnit(int index) throws IndexOutOfBoundsException {
     throw new UnsupportedOperationException();
   }
 
@@ -499,7 +499,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readFWord(int index) {
+  public int readFWord(int index) throws IndexOutOfBoundsException {
     return readShort(index);
   }
 
@@ -509,7 +509,7 @@ public class ReadableFontData extends FontData {
    * @param index index into the font data
    * @throws IndexOutOfBoundsException if index is outside the FontData's range
    */
-  public int readUFWord(int index) {
+  public int readUFWord(int index) throws IndexOutOfBoundsException {
     return readUShort(index);
   }
 

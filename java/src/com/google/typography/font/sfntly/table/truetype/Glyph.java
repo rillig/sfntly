@@ -43,7 +43,8 @@ public abstract class Glyph extends SubTable {
     }
   }
 
-  private static Glyph.GlyphType glyphType(ReadableFontData data, int offset, int length) {
+  private static Glyph.GlyphType glyphType(ReadableFontData data, int offset, int length)
+      throws IndexOutOfBoundsException {
     if (offset > data.length()) {
       throw new IndexOutOfBoundsException();
     }
@@ -100,18 +101,34 @@ public abstract class Glyph extends SubTable {
   }
 
   public int xMin() {
+    // if there are no contours, there are no data for xMin, xMax, yMin and yMax
+    // and data.readShort() would throw an exception.
+    if (numberOfContours == 0)
+      return 0;
     return data.readShort(GlyphTable.Offset.xMin);
   }
 
   public int xMax() {
+    // if there are no contours, there are no data for xMin, xMax, yMin and yMax
+    // and data.readShort() would throw an exception.
+    if (numberOfContours == 0)
+        return 0;
     return data.readShort(GlyphTable.Offset.xMax);
   }
 
   public int yMin() {
+    // if there are no contours, there are no data for xMin, xMax, yMin and yMax
+    // and data.readShort() would throw an exception.
+    if (numberOfContours == 0)
+        return 0;
     return data.readShort(GlyphTable.Offset.yMin);
   }
 
   public int yMax() {
+    // if there are no contours, there are no data for xMin, xMax, yMin and yMax
+    // and data.readShort() would throw an exception.
+    if (numberOfContours == 0)
+        return 0;
     return data.readShort(GlyphTable.Offset.yMax);
   }
 

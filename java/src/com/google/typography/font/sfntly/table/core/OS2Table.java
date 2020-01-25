@@ -30,6 +30,8 @@ import java.util.EnumSet;
  */
 public final class OS2Table extends Table {
 
+  private  int  version;
+
   private interface Offset {
     int version = 0;
     int xAvgCharWidth = 2;
@@ -62,18 +64,19 @@ public final class OS2Table extends Table {
     int sTypoDescender = 70;
     int sTypoLineGap = 72;
     int usWinAscent = 74;
-    int usWinDescent = 76;
+    int usWinDescent = 76;     // version 0 stops here
     int ulCodePageRange1 = 78;
-    int ulCodePageRange2 = 82;
+    int ulCodePageRange2 = 82; // version 1 stop here
     int sxHeight = 86;
     int sCapHeight = 88;
     int usDefaultChar = 90;
     int usBreakChar = 92;
-    int usMaxContext = 94;
+    int usMaxContext = 94;    // version 2, 3, and 4 stop here
   }
 
   private OS2Table(Header header, ReadableFontData data) {
     super(header, data);
+    version = data.readUShort(Offset.version);	// cache version datum
   }
 
   public int tableVersion() {
@@ -550,10 +553,14 @@ public final class OS2Table extends Table {
   }
 
   public long ulCodePageRange1() {
+    if (version < 1)
+      return 0;
     return data.readULong(Offset.ulCodePageRange1);
   }
 
   public long ulCodePageRange2() {
+    if (version < 1)
+      return 0;
     return data.readULong(Offset.ulCodePageRange2);
   }
 
@@ -661,26 +668,38 @@ public final class OS2Table extends Table {
   }
 
   public EnumSet<CodePageRange> ulCodePageRange() {
+    if (version < 1)
+        return  CodePageRange.asSet(0, 0);
     return CodePageRange.asSet(ulCodePageRange1(), ulCodePageRange1());
   }
 
   public int sxHeight() {
+    if (version < 2)
+      return 0;
     return data.readShort(Offset.sxHeight);
   }
 
   public int sCapHeight() {
+    if (version < 2)
+      return 0;
     return data.readShort(Offset.sCapHeight);
   }
 
   public int usDefaultChar() {
+    if (version < 2)
+      return 0;
     return data.readUShort(Offset.usDefaultChar);
   }
 
   public int usBreakChar() {
+    if (version < 2)
+      return 0;
     return data.readUShort(Offset.usBreakChar);
   }
 
   public int usMaxContext() {
+    if (version < 2)
+      return 0;
     return data.readUShort(Offset.usMaxContext);
   }
 
