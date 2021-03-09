@@ -4,6 +4,7 @@ import com.google.typography.font.sfntly.Font;
 import com.google.typography.font.sfntly.data.ReadableFontData;
 import com.google.typography.font.sfntly.data.WritableFontData;
 import com.google.typography.font.sfntly.table.SubTable;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -148,7 +149,7 @@ public abstract class CMap extends SubTable implements Iterable<Integer> {
     @Override
     public boolean hasNext() {
       while (range < nRanges) {
-        if (curr < end) {
+        if (curr <= end) {
           return true;
         }
         this.range++;
