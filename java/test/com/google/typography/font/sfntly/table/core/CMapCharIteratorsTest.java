@@ -1,17 +1,18 @@
 package com.google.typography.font.sfntly.table.core;
 
+import junit.framework.TestCase;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import junit.framework.TestCase;
 
 public class CMapCharIteratorsTest extends TestCase {
 
   public void testCharRangeIterator() {
     CMap.CharacterRangeIterator it = new CMap.CharacterRangeIterator(5, 8);
 
-    assertEquals(Arrays.asList(5, 6, 7), toList(it));
+      assertEquals(Arrays.asList(5, 6, 7), toList(it));
   }
 
   public void testCharRangesIterator() {
@@ -30,7 +31,7 @@ public class CMapCharIteratorsTest extends TestCase {
           }
         };
 
-    assertEquals(Arrays.asList(0, 1, 2, 3, 4, 10, 0, 1, 2), toList(it));
+    assertEquals(Arrays.asList(0, 1, 2, 3, 4, 10, 0, 1, 2, 11), toList(it));
   }
 
   private static List<Integer> toList(Iterator<Integer> it) {
