@@ -1,7 +1,7 @@
 # Directories #
-java/build/
-java/bin/
-java/target/
+build/
+bin/
+target/
 workfiles/
 
 # Temps and Backups #
@@ -25,20 +25,11 @@ Desktop.ini
 .DS_Store
 
 ######################
-# NetBeans
+# IntelliJ
 ######################
-ant_nbproject/
-ant_build.xml
-nb-configuration.xml
+.idea/
+*.iml
 
-######################
-# Eclipse
-######################
-java/.metadata/
-java/.recommenders/
-java/.settings/
-java/.classpath
-java/.project
 
 ######################
 # Java
